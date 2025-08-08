@@ -1,0 +1,64 @@
+# server.port=8085
+
+# spring.cloud.gateway.routes[0].id=student-service
+# spring.cloud.gateway.routes[0].uri=lb://STUDENTINFO
+# spring.cloud.gateway.routes[0].predicates[0]=Path=/students/**
+
+# # spring.cloud.gateway.routes[0].filters[0]=StripPrefix=1 (commented out like in YAML)
+
+# spring.cloud.gateway.routes[1].id=student-actuators
+# spring.cloud.gateway.routes[1].uri=lb://STUDENTINFO
+# spring.cloud.gateway.routes[1].predicates[0]=Path=/student/actuator/**
+# spring.cloud.gateway.routes[1].filters[0]=StripPrefix=1
+
+# spring.cloud.gateway.routes[2].id=course-actuators
+# spring.cloud.gateway.routes[2].uri=lb://COURSE-SERVICE
+# spring.cloud.gateway.routes[2].predicates[0]=Path=/course/actuator/**
+# spring.cloud.gateway.routes[2].filters[0]=StripPrefix=1
+
+# eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+# eureka.client.fetch-registry=true
+# eureka.client.register-with-eureka=true
+# eureka.instance.prefer-ip-address=true
+
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: student-service
+          uri: lb://STUDENTINFO
+          predicates:
+            - Path=/students/**
+        #          filters:
+        #            - StripPrefix=1
+
+        # Student service actuator endpoints
+        - id: student-actuators
+          uri: lb://STUDENTINFO
+          predicates:
+            - Path=/student/actuator/**
+          filters:
+            - StripPrefix=1
+
+        # Student service actuator endpoints
+        - id: course-actuators
+          uri: lb://COURSE-SERVICE
+          predicates:
+            - Path=/course/actuator/**
+          filters:
+            - StripPrefix=1
+
+server:
+  port: 8085
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+
